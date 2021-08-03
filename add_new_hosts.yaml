@@ -1,0 +1,25 @@
+- name: add new hosts
+  hosts: all
+  tasks:
+    - name: Create {{ user }} user on remote host
+      user:
+        name: "{{ user }}"
+    
+    - name: Create .shh dir in {{ user }} remote home
+      file:
+        path: /home/{{ user }}/.ssh
+        state: directory
+
+    - name: Copy public key to {{ user }} remote home 
+      copy:
+        src: /home/{{ user }}/.ssh/id_rsa.pub
+        dest: /home/{{ user }}/.ssh/authorized_keys
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '0644'
+
+    - name: Create {{ user }} sudoers file
+      shell: |
+        echo "{{ user }} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/{{ user }}
+      
+      
