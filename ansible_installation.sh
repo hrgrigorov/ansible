@@ -8,6 +8,7 @@ install_packages() {
 
 config_ansible_user() {
     useradd ansible
+    mkdir /home/ansible/.ssh
     ssh-keygen -f /home/ansible/.ssh/id_rsa -N ""
     echo "ansible ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible
 }
